@@ -1,4 +1,5 @@
 // Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors.
+// Copyright (c) 2024 and contributors, Kuinox. All rights reserved.
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
@@ -585,9 +586,6 @@ namespace Moq
                 }
 
                 // For all other cases, we create a regular setup.
-
-                Guard.IsOverridable(part.Method, part.Expression);
-                Guard.IsVisibleToProxyFactory(part.Method);
 
                 var setup = new MethodCall(originalExpression, targetMock, condition: null, expectation: part);
                 setup.SetReturnValueBehavior(value);

@@ -1,14 +1,16 @@
 // Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors.
+// Copyright (c) 2024 and contributors, Kuinox. All rights reserved.
+
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 #if FEATURE_DEFAULT_INTERFACE_IMPLEMENTATIONS
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime;
 using System.Text;
@@ -18,6 +20,7 @@ using Castle.DynamicProxy;
 
 using Moq.Internals;
 using Moq.Properties;
+using Myna.API;
 
 namespace Moq
 {
@@ -59,7 +62,17 @@ namespace Moq
 
             try
             {
-                return generator.CreateClassProxy(mockType, additionalInterfaces, this.generationOptions, arguments, new Interceptor(interceptor));
+                if (!mockType.Assembly.CustomAttributes.Any(x => x.AttributeType.FullName == "Myna.API.MynaWeavingSentinelAttribute"))
+                    throw new InvalidOperationException("Target type assembly did not get weaved for mocking classes.");
+                var theInterceptor = new Interceptor(interceptor);
+                var proxy = new MockProxy((method, args) =>
+                {
+                    var mynaInvocation = new MockerInvocation(method, args);
+                    theInterceptor.Intercept(mynaInvocation);
+                    return mynaInvocation.ReturnValue;
+                });
+                var obj = Activator.CreateInstance(mockType, proxy);
+                return obj;
             }
             catch (TypeLoadException e)
             {
@@ -79,6 +92,64 @@ namespace Moq
         public override bool IsTypeVisible(Type type)
         {
             return ProxyUtil.IsAccessible(type);
+        }
+
+        class MockerInvocation : Castle.DynamicProxy.IInvocation
+        {
+            readonly Delegate _method;
+            readonly object[] _args;
+
+            public MockerInvocation(Delegate method, object[] args)
+            {
+                _method = method;
+                _args = args;
+            }
+
+            public object[] Arguments => _args;
+
+            public Type[] GenericArguments => throw new NotImplementedException();
+
+            public object InvocationTarget => _method.Target;
+
+            public MethodInfo Method => _method.Method;
+
+            public MethodInfo MethodInvocationTarget => throw new NotImplementedException();
+
+            public object Proxy => typeof(MockProxy);
+
+            public object ReturnValue { get; set; }
+
+            public Type TargetType => throw new NotImplementedException();
+
+            public IInvocationProceedInfo CaptureProceedInfo()
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetArgumentValue(int index)
+            {
+                throw new NotImplementedException();
+            }
+
+            public MethodInfo GetConcreteMethod()
+            {
+                throw new NotImplementedException();
+            }
+
+            public MethodInfo GetConcreteMethodInvocationTarget()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Proceed()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetArgumentValue(int index, object value)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         sealed class Interceptor : Castle.DynamicProxy.IInterceptor

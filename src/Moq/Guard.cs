@@ -1,4 +1,6 @@
 // Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors.
+// Copyright (c) 2024, Kuinox and contributors. All rights reserved.
+
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
@@ -78,47 +80,6 @@ namespace Moq
                     Resources.SetupNotSetter,
                     expression.ToStringFixed()),
                 paramName);
-        }
-
-        public static void IsOverridable(MethodInfo method, Expression expression)
-        {
-            if (method.IsStatic)
-            {
-                throw new NotSupportedException(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        Resources.UnsupportedExpressionWithHint,
-                        expression.ToStringFixed(),
-                        string.Format(
-                            CultureInfo.CurrentCulture,
-                            method.IsExtensionMethod() ? Resources.UnsupportedExtensionMethod : Resources.UnsupportedStaticMember,
-                            $"{method.DeclaringType.GetFormattedName()}.{method.Name}")));
-            }
-            else if (!method.CanOverride())
-            {
-                throw new NotSupportedException(
-                    string.Format(
-                        CultureInfo.CurrentCulture,
-                        Resources.UnsupportedExpressionWithHint,
-                        expression.ToStringFixed(),
-                        string.Format(
-                            CultureInfo.CurrentCulture,
-                            Resources.UnsupportedNonOverridableMember,
-                            $"{method.DeclaringType.GetFormattedName()}.{method.Name}")));
-            }
-        }
-
-        public static void IsVisibleToProxyFactory(MethodInfo method)
-        {
-            if (ProxyFactory.Instance.IsMethodVisible(method, out string messageIfNotVisible) == false)
-            {
-                throw new ArgumentException(string.Format(
-                    CultureInfo.CurrentCulture,
-                    Resources.MethodNotVisibleToProxyFactory,
-                    method.DeclaringType.Name,
-                    method.Name,
-                    messageIfNotVisible));
-            }
         }
 
         public static void IsEventAdd(LambdaExpression expression, string paramName)

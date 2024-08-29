@@ -1,5 +1,7 @@
 BSD-3-Clause
 
+Copyright (c) 2024 and contributors, Kuinox. All rights reserved.
+
 Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD,
 and Contributors. All rights reserved.
 

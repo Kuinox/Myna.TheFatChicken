@@ -1,4 +1,5 @@
 // Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors.
+// Copyright (c) 2024 and contributors, Kuinox. All rights reserved.
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
@@ -77,16 +78,11 @@ namespace Moq
 
         readonly bool exactGenericTypeArguments;
 
+        /// <param name="allowNonOverridable">Mocker: doesn't do anything. Kept to keep 100% API compatibility with Moq.</param>
         public MethodExpectation(LambdaExpression expression, MethodInfo method, IReadOnlyList<Expression> arguments = null, bool exactGenericTypeArguments = false, bool skipMatcherInitialization = false, bool allowNonOverridable = false)
         {
             Debug.Assert(expression != null);
             Debug.Assert(method != null);
-
-            if (!allowNonOverridable)  // the sole currently known legitimate case where this evaluates to `false` is when setting non-overridable properties via LINQ to Mocks
-            {
-                Guard.IsOverridable(method, expression);
-                Guard.IsVisibleToProxyFactory(method);
-            }
 
             this.expression = expression;
             this.Method = method;

@@ -44,16 +44,6 @@
 [file ".github/workflows/build.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/build.yml
     skip
-[file ".github/workflows/changelog.config"]
-	url = https://github.com/devlooped/oss/blob/main/.github/workflows/changelog.config
-	sha = 08d83cb510732f861416760d37702f9f55bd7f9e
-	etag = 556a28914eeeae78ca924b1105726cdaa211af365671831887aec81f5f4301b4
-	weak
-[file ".github/workflows/changelog.yml"]
-	url = https://github.com/devlooped/oss/blob/main/.github/workflows/changelog.yml
-	sha = 5fb172362c767bef7c36478f1a6bdc264723f8f9
-	etag = ad1efa56d6024ee1add2bcda81a7e4e38d0e9069473c6ff70374d5ce06af1f5a
-	weak
 [file ".github/workflows/combine-prs.yml"]
 	url = https://github.com/devlooped/oss/blob/main/.github/workflows/combine-prs.yml
 	sha = c1610886eba42cb250e3894aed40c0a258cd383d
