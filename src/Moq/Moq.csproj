@@ -20,7 +20,7 @@
     <Title>Myna.TheFatChicken: Moq®️ but you can Mock classes.</Title>
     <Description>Myna.TheFatChicken is a fork of Moq®️ that lets you mock classes directly, removing the need for unnecessary interfaces.</Description>
     <Authors>Daniel Cazzulino, kzu, Kuinox</Authors>
-    <Copyright>Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors. All rights reserved.</Copyright>
+    <Copyright>Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD, and Contributors. All rights reserved. Copyright (c) 2024, Kuinox and contributors. All rights reserved.</Copyright>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
